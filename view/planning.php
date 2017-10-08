@@ -2,6 +2,9 @@
 require_once __DIR__.'/../vendor/autoload.php';
 include '../view/commons/header.php';
 include '../view/commons/footer.php';
+use RedBeanPHP\R;
+R::setup( 'mysql:host=localhost;dbname=optimoov',
+    'root', '' );
 ?>
 <link rel="stylesheet" href="../web/css/bootstrap.css">
 <link rel="stylesheet" href="../web/css/custom.css">
@@ -31,7 +34,14 @@ if (count($results->getItems()) == 0) {
     print "Pas d'évènements demain dans l'agenda.\n";
 } else {
     $km = 0;
-    $previousEventLocation = "La Chaize-le-vicomte, France";
+
+    $plus = new Google_Service_Plus($client);
+    $mail = $plus->people->get('me');
+    $mail = $mail['emails']['0']['value'];
+
+    $user  = R::findOne( 'user', ' mail = ? ', [$mail] );
+    $previousEventLocation = $user["adresse"].", ".$user["ville"].", France";
+    $_SESSION["origin"] = $previousEventLocation;
     ?>
     <div class="container">
     <table class="table table-striped">
@@ -53,6 +63,7 @@ if (count($results->getItems()) == 0) {
       <thead>
 
     <?php
+    $_SESSION['waypoints'] = array();
     foreach ($results->getItems() as $event) {
       ?><tr><?php
         $start = $event->start->dateTime;
@@ -67,11 +78,13 @@ if (count($results->getItems()) == 0) {
         $previousEventLocation = $event->location;
         $array = json_decode($json);
 
-        //$km += $array->routes[0]->legs[0]->distance->text;
+        array_push($_SESSION["waypoints"], $event->location);
+        $_SESSION["destination"] = $event->location;
         ?><td><?php echo $array->routes[0]->legs[0]->distance->text; ?></td><?php
         $km += floatval(str_replace("km", "", $array->routes[0]->legs[0]->distance->text));
         ?><td><?php echo $km." km"; ?></td><?php
         ?></tr><?php
+        $_SESSION['km'] = $km;
     }
     ?></table></div><?php
   }
