@@ -90,7 +90,7 @@ var locations = [<?php for ($i=1; $i < sizeof($borne)+1; $i++) {
 
       var myOptions = {
         center: new google.maps.LatLng(46.670511, -1.4264419999999518),
-        zoom: 8
+        zoom: 9
 
       };
       var map = new google.maps.Map(document.getElementById("map"),
@@ -128,7 +128,7 @@ var locations = [<?php for ($i=1; $i < sizeof($borne)+1; $i++) {
                   icon:"../web/assets/markers/type1.png"
 
                 });
-          map.setCenter(marker.getPosition())
+          //map.setCenter(marker.getPosition())
 
           var type_connecteur;
 
