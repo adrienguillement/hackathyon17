@@ -30,6 +30,13 @@
       </ul>
 
       <ul class="navbar-nav mr-auto">
+          <!--  DECONNECTION -->
+          <?php if($app['session']->get('is_user')){?>
+          <li class="nav-item">
+              <a class="nav-link params" href="http://localhost/hackathyon17/web/<?php echo 'deconnection";'?>"><i class="fa fa-cogs" aria-hidden="true"></i> Déconnection</a>
+          </li>
+          <?php }?>
+
         <li class="nav-item">
             <a class="nav-link params" href="http://localhost/hackathyon17/web/<?php echo 'parametres";'?>"><i class="fa fa-cogs" aria-hidden="true"></i> Parametres</a>
         </li>
