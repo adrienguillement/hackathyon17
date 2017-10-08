@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "75a229b380420250d24ad1b786ecc0d1",
+    "content-hash": "d2a316d420962f8068c2459308678979",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -91,7 +91,8 @@
             "keywords": [
                 "orm"
             ],
-            "time": "2017-03-07T22:26:54+00:00"
+            "time": "2017-10-03 21:44:55"
+
         },
         {
             "name": "google/apiclient",
@@ -1303,7 +1304,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "gabordemooij/redbean": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
