@@ -133,7 +133,7 @@ $app->post('/parametre', function () use($client, $app){
 
         $client->setAccessToken($app['session']->get('token'));
         $token = json_decode($app['session']->get('token')['access_token']);
-        require ('../view/setting.php');
+        require ('../view/index.php');
         $output = ob_get_clean();
     }
 
