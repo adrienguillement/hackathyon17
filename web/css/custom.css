@@ -39,3 +39,7 @@ body > .container {
 code {
   font-size: 80%;
 }
+
+.titreBox{
+	font-size: 18px !important;
+}
