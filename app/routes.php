@@ -112,8 +112,8 @@ $app->post('/parametre', function () use($client, $app){
         $output = $app->redirect('.');
     } else {
         ob_start();
-        R::setup( 'mysql:host=localhost;dbname=optimoov',
-            'root', null );
+        R::addDatabase( 'test', 'mysql:host=localhost;dbname=optimoov', 'root', null);
+        R::selectDatabase( 'test' );
         // Récupération des données
         $prenom = $_POST['prenom'];
         $nom = $_POST['nom'];
