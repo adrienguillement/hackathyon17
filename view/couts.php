@@ -58,7 +58,6 @@ if($energie_base < $energie_trajet && $capacite_batterie < $energie_trajet){
 echo "</pre>";?>
 <?php echo $_SESSION["origin"]; ?>
 <?php echo $_SESSION["destination"];
-var_dump($_SESSION["waypoints"]);
 $waypoints = "";
 for($i=0; $i<sizeof($_SESSION["waypoints"]); $i++){
   $waypoints .= "{ location: '".$_SESSION["waypoints"][$i]."'}";
