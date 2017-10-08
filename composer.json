@@ -1,8 +1,8 @@
 {
   "require": {
     "google/apiclient": "^2.0",
-    "silex/silex": "2.0"
-
+    "silex/silex": "2.0",
+    "gabordemooij/redbean": "dev-master"
   },
   "autoload": {
     "psr-4": {
