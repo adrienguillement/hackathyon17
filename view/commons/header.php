@@ -3,9 +3,6 @@
 <head>
   <meta charset="utf-8">
   <title>Opti'Moov</title>
-  <link rel="stylesheet" href="../../web/css/bootstrap.css">
-  <link rel="stylesheet" href="../../web/css/custom.css">
-  <link rel="stylesheet" href="../../web/assets/font-awesome-4.7.0/css/font-awesome.min.css">
 
 </head>
 <body>
@@ -30,16 +27,17 @@
       </ul>
 
       <ul class="navbar-nav mr-auto">
-          <!--  DECONNECTION -->
-          <?php if($app['session']->get('is_user')){?>
-          <li class="nav-item">
-              <a class="nav-link params" href="http://localhost/hackathyon17/web/<?php echo 'deconnection";'?>"><i class="fa fa-cogs" aria-hidden="true"></i> Déconnection</a>
-          </li>
-          <?php }?>
 
         <li class="nav-item">
             <a class="nav-link params" href="http://localhost/hackathyon17/web/<?php echo 'parametres";'?>"><i class="fa fa-cogs" aria-hidden="true"></i> Parametres</a>
         </li>
+
+        <!--  DECONNECTION -->
+        <?php if($app['session']->get('is_user')){?>
+        <li class="nav-item">
+            <a class="nav-link deconnection" href="http://localhost/hackathyon17/web/<?php echo 'deconnection";'?>"><i class="fa fa-power-off" aria-hidden="true"></i> Déconnection</a>
+        </li>
+      <?php }?>
       </ul>
     </div>
   </nav>

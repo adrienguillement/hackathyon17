@@ -32,7 +32,7 @@ for ($i=1; $i < sizeof($borne); $i++) {
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 50%;
+        height: 80%;
         width: 100%;
 
       }
@@ -46,18 +46,9 @@ for ($i=1; $i < sizeof($borne); $i++) {
   </head>
   <body onload="initialize()">
   <div id="map"></div>
-    <div>
-      <div class="card card-outline-primary text-xs-center">
-        <div class="card-block">
-          <blockquote class="card-blockquote">
-            <p>Nombre de Km : </p>
-            <p>Durée de la destination : </p>
-          </blockquote>
-        </div>
-      </div>
-    </div>
-    <script>
 
+
+  <script>
 
 var locations = [<?php for ($i=1; $i < sizeof($borne)+1; $i++) {
   if($i < sizeof($borne))
