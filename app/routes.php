@@ -7,12 +7,14 @@ $app['debug'] = true;
 $app->get('/', function () use($client, $app){
     if(!$app['session']->get('is_user'))
     {
-        $url = $client->createAuthUrl();
-        $output = '<a href="'.$url.'">Se connecter </a>';
+      $url = $client->createAuthUrl();
+      $output = '<a href="'.$url.'">Se connecter </a>';
     }
     else {
         $output = $app->redirect('home');
     }
+    $url = $client->createAuthUrl();
+    $output = '<a href="'.$url.'">Se connecter </a>';
     return $output;
 });
 

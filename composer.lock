@@ -54,16 +54,16 @@
         },
         {
             "name": "gabordemooij/redbean",
-            "version": "dev-master",
+            "version": "v4.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gabordemooij/redbean.git",
-                "reference": "917d9ff6bd900c6f90481f8861245168f600bcf1"
+                "reference": "d0944d7f966d7f45a0d973981fe3f64aff0050f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/917d9ff6bd900c6f90481f8861245168f600bcf1",
-                "reference": "917d9ff6bd900c6f90481f8861245168f600bcf1",
+                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/d0944d7f966d7f45a0d973981fe3f64aff0050f0",
+                "reference": "d0944d7f966d7f45a0d973981fe3f64aff0050f0",
                 "shasum": ""
             },
             "require": {
@@ -92,6 +92,7 @@
                 "orm"
             ],
             "time": "2017-10-03 21:44:55"
+
         },
         {
             "name": "google/apiclient",

@@ -2,7 +2,7 @@
   "require": {
     "google/apiclient": "^2.0",
     "silex/silex": "2.0",
-    "gabordemooij/redbean": "dev-master"
+    "gabordemooij/redbean": "^4.3"
 
   },
   "autoload": {
