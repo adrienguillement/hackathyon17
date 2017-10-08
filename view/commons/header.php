@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Opti'Moov</title>
+  <link rel="icon" type="image/png" href="../web/assets/logo/Placeholder.png" />
 
 </head>
 <body>

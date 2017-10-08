@@ -117,7 +117,7 @@ var locations = [<?php for ($i=1; $i < sizeof($borne)+1; $i++) {
 
           var marker = new google.maps.Marker({
                   map: map, title: typeRecharge , position: latlngset,
-                  icon:"../web/assets/markers/type1.png"
+                  icon:"../web/assets/logo/Placeholder.png"
 
                 });
           //map.setCenter(marker.getPosition())
