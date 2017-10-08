@@ -18,8 +18,6 @@ $app->get('/', function () use($client, $app){
     else {
         $output = $app->redirect('home');
     }
-    require ('../view/connect.php');
-    $output = ob_get_clean();
     return $output;
 });
 $app->get('/deconnection', function () use($client, $app){

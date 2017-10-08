@@ -2,6 +2,9 @@
 
 include '../view/commons/header.php';
 include '../view/commons/footer.php';
+use RedBeanPHP\R;
+R::setup( 'mysql:host=localhost;dbname=optimoov',
+    'root', '' );
 ?>
 <link rel="stylesheet" href="../web/css/bootstrap.css">
 <link rel="stylesheet" href="../web/css/custom.css">
@@ -10,38 +13,49 @@ include '../view/commons/footer.php';
 <!-- ENDNAVBAR -->
 
 <?php
+$service = new Google_Service_Calendar($client);
+$calendarId = 'primary';
+$dateDemainSoir = new DateTime();
 
-    $service = new Google_Service_Calendar($client);
-    $calendarId = 'primary';
-    $optParams = array(
-        'maxResults' => 10,
-        'orderBy' => 'startTime',
-        'singleEvents' => TRUE,
-        'timeMin' => date('c'),
-    );
-    $results = $service->events->listEvents($calendarId, $optParams);
+$dateDemainSoir = $dateDemainSoir->modify("+1 day");
+$dateDemainSoir->setTime(23, 59, 59);
 
-    if (count($results->getItems()) == 0) {
-        print "No upcoming events found.\n";
-    } else {
-        print "Upcoming events:\n";
-        foreach ($results->getItems() as $event) {
-            $start = $event->start->dateTime;
-            if (empty($start)) {
-                $start = $event->start->date;
-            }
-            printf("%s (%s +++LIEU+++ %s)\n\n\n\t", $event->getSummary(), $start, $event->location);
+$dateDemainMatin = new DateTime();
+$dateDemainMatin = $dateDemainMatin->modify("+1 day");
+$dateDemainMatin->setTime(00, 00, 00);
+$optParams = array(
+      'maxResults' => 10,
+      'orderBy' => 'startTime',
+      'singleEvents' => TRUE,
+      'timeMax' => $dateDemainSoir->format("Y-m-d\TH:m:sP"),
+      'timeMin' => $dateDemainMatin->format("Y-m-d\TH:m:sP"),
+);
+$results = $service->events->listEvents($calendarId, $optParams);
+
+if (count($results->getItems()) == 0) {
+    print "Pas d'évènements demain dans l'agenda.\n";
+} else {
+    $km = 0;
+
+    $user  = R::findOne( 'user', ' mail = ? ', [$mail] );
+    $previousEventLocation = $user["adresse"].", ".$user["ville"].", France";
+    $_SESSION["origin"] = $previousEventLocation;
+
+    $_SESSION['waypoints'] = array();
+    foreach ($results->getItems() as $event) {
+        $start = $event->start->dateTime;
+        if (empty($start)) {
+            $start = $event->start->date;
         }
+        $endAddresse = str_replace(" ", "%20", $event->location);
+        $previousEventLocation = str_replace(" ", "%20", $previousEventLocation);
+        $json = file_get_contents('https://maps.googleapis.com/maps/api/directions/json?origin='.$previousEventLocation.'&destination='.$endAddresse.'&key=AIzaSyAVqjzEqc5bQS9K8k3AySOb1E57KMoMoc4');
+        $previousEventLocation = $event->location;
+        $array = json_decode($json);
+        array_push($_SESSION["waypoints"], $event->location);
+        $_SESSION['destination'] = $event->location;
+        //$km += $array->routes[0]->legs[0]->distance->text;
+        $km += floatval(str_replace("km", "", $array->routes[0]->legs[0]->distance->text));
+        $_SESSION['km'] = $km;
     }
-    ?>
-    <?php
-    $plus = new Google_Service_Plus($client);
-    $mail = $plus->people->get('me');
-    echo '<PRE>';
-    var_dump($mail['emails']['0']['value']);
-    echo '</PRE>';
-
-
-?>
-</body>
-</html>
+}
