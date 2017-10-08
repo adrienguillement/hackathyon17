@@ -3,8 +3,8 @@ require __DIR__ . '../../vendor/autoload.php';
 include 'commons/header.php';
 include 'commons/footer.php';
 use RedBeanPHP\R;
-R::setup( 'mysql:host=localhost;dbname=optimoov',
-    'root', null );
+R::addDatabase( 'optimoov', 'mysql:host=localhost;dbname=optimoov', 'root', null);
+R::selectDatabase( 'optimoov' );
 ?>
 <link rel="stylesheet" href="../web/css/bootstrap.css" ;?>
 <link rel="stylesheet" href="../web/css/custom.css">
@@ -20,6 +20,7 @@ $vehicule  = R::findOne( 'vehicule', ' id = ? ', [$user["vehicule_id"]] );
 <div class="container" style="padding-bottom: 50px;">
     <div class="row justify-content-md-center">
         <div class="col">
+            <h1 style="text-align: center;"> Complétez vos données pour avoir accès à toutes les fonctionnalités de l'application !</h1><br>
             <form action="parametre" method="post">
                 <fieldset>
                     <legend>Renseignements sur moi : </legend>

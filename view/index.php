@@ -4,8 +4,8 @@ include '../view/commons/header.php';
 include '../view/commons/footer.php';
 use RedBeanPHP\R;
 
-R::setup( 'mysql:host=localhost;dbname=optimoov',
-    'root', null );
+R::addDatabase( 'optimoov', 'mysql:host=localhost;dbname=optimoov', 'root', null);
+R::selectDatabase( 'optimoov' );
 ?>
 <link rel="stylesheet" href="../web/css/bootstrap.css">
 <link rel="stylesheet" href="../web/css/custom.css">
