@@ -3,7 +3,8 @@ include 'commons/header.php';
 include 'commons/footer.php';
 use RedBeanPHP\R;
 
-R::setup( 'mysql:host=localhost;dbname=optimoov','root', null);
+R::setup( 'mysql:host=localhost;dbname=optimoov',
+    'root', null );
 $borne = R::findAll('bornes');/*
 for ($i=1; $i < sizeof($borne); $i++) {
   echo '<PRE>';

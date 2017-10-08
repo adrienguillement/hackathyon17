@@ -3,8 +3,9 @@ require_once __DIR__.'/../vendor/autoload.php';
 include 'commons/header.php';
 include 'commons/footer.php';
 use RedBeanPHP\R;
+
 R::setup( 'mysql:host=localhost;dbname=optimoov',
-    'root', '' );
+    'root', null );
 ?>
 <link rel="stylesheet" href="../web/css/bootstrap.css" ;?>
 <link rel="stylesheet" href="../web/css/custom.css">

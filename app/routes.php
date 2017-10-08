@@ -3,8 +3,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use RedBeanPHP\R;
 
-R::setup( 'mysql:host=localhost;dbname=optimoov',
-    'root', null );
 
 // ... default page
 $app['debug'] = true;
@@ -37,6 +35,8 @@ $app->get('/deconnection', function () use($client, $app){
 $app->get('/home', function () use($client, $app){
     //$app['session']->clear();
     if(isset($_GET['code'])){
+        R::setup( 'mysql:host=localhost;dbname=optimoov',
+            'root', null );
         $app['session']->set('code', $_GET['code']);
         $client->authenticate($app['session']->get('code'));
         $app['session']->set('token', $client->getAccessToken());
@@ -49,6 +49,8 @@ $app->get('/home', function () use($client, $app){
         $eamil = $mail['emails']['0']['value'];
         $user  = R::findOne( 'user', ' mail = ? ', [$eamil] );
         if(!isset($user)){
+
+
 
             // INSERT VEHICULE
             R::exec( 'INSERT INTO vehicule (pourcentage_batterie) VALUE (100) ' );
@@ -110,6 +112,8 @@ $app->post('/parametre', function () use($client, $app){
         $output = $app->redirect('.');
     } else {
         ob_start();
+        R::setup( 'mysql:host=localhost;dbname=optimoov',
+            'root', null );
         // Récupération des données
         $prenom = $_POST['prenom'];
         $nom = $_POST['nom'];

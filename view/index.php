@@ -3,8 +3,9 @@
 include '../view/commons/header.php';
 include '../view/commons/footer.php';
 use RedBeanPHP\R;
+
 R::setup( 'mysql:host=localhost;dbname=optimoov',
-    'root', '' );
+    'root', null );
 ?>
 <link rel="stylesheet" href="../web/css/bootstrap.css">
 <link rel="stylesheet" href="../web/css/custom.css">
@@ -36,8 +37,10 @@ if (count($results->getItems()) == 0) {
     print "Pas d'évènements demain dans l'agenda.\n";
 } else {
     $km = 0;
-
-    $user  = R::findOne( 'user', ' mail = ? ', [$mail] );
+    $plus = new Google_Service_Plus($client);
+    $mail = $plus->people->get('me');
+    $eamil = $mail['emails']['0']['value'];
+    $user  = R::findOne( 'user', ' mail = ? ', [$eamil] );
     $previousEventLocation = $user["adresse"].", ".$user["ville"].", France";
     $_SESSION["origin"] = $previousEventLocation;
 
