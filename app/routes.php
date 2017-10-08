@@ -73,9 +73,24 @@ $app->get('/home', function () use($client, $app){
         ob_start();
         $client->setAccessToken($app['session']->get('token'));
         $token = json_decode($app['session']->get('token')['access_token']);
+        require('../view/default.php');
+        $output = ob_get_clean();
+    }
+    return $output;
+});
+// ... accueil page
+$app->get('/accueil', function () use($client, $app){
+    ob_start();
+    if(!$app['session']->get('is_user')){
+        $output = $app->redirect('.');
+    } else {
+        ob_start();
+        $client->setAccessToken($app['session']->get('token'));
+        $token = json_decode($app['session']->get('token')['access_token']);
         require ('../view/index.php');
         $output = ob_get_clean();
     }
+
     return $output;
 });
 // ... map page
