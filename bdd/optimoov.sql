@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  sam. 07 oct. 2017 à 17:44
+-- Généré le :  Dim 08 oct. 2017 à 19:34
 -- Version du serveur :  10.1.26-MariaDB
 -- Version de PHP :  7.1.9
 
@@ -35,7 +35,7 @@ CREATE TABLE `modele` (
   `libelle` varchar(255) NOT NULL,
   `poids` float(10,2) NOT NULL,
   `autonomie` float(10,1) NOT NULL,
-  `Wh/km` float(10,2) NOT NULL,
+  `epa` float(10,2) NOT NULL COMMENT 'Wh/km',
   `SCx` float(10,3) DEFAULT NULL,
   `MAX_AC` float(10,2) NOT NULL,
   `tension_max_chargeur_ac` int(5) NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE `modele` (
   `MAX_DC` int(3) NOT NULL,
   `tension_max_chargeur_dc` int(4) NOT NULL,
   `courant_max_chargeur_dc` int(4) NOT NULL,
-  `capactie_batterie` float(10,2) NOT NULL,
+  `capacite_batterie` float(10,2) NOT NULL,
   `rendement` float(10,2) NOT NULL,
   `coefficient_resistance_roulement` float(10,3) NOT NULL,
   `vitesse_maximale` int(3) NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE `modele` (
 -- Déchargement des données de la table `modele`
 --
 
-INSERT INTO `modele` (`id`, `libelle`, `poids`, `autonomie`, `Wh/km`, `SCx`, `MAX_AC`, `tension_max_chargeur_ac`, `courant_max_chargeur_ac`, `MAX_DC`, `tension_max_chargeur_dc`, `courant_max_chargeur_dc`, `capactie_batterie`, `rendement`, `coefficient_resistance_roulement`, `vitesse_maximale`, `puissance_recuperee`) VALUES
+INSERT INTO `modele` (`id`, `libelle`, `poids`, `autonomie`, `epa`, `SCx`, `MAX_AC`, `tension_max_chargeur_ac`, `courant_max_chargeur_ac`, `MAX_DC`, `tension_max_chargeur_dc`, `courant_max_chargeur_dc`, `capacite_batterie`, `rendement`, `coefficient_resistance_roulement`, `vitesse_maximale`, `puissance_recuperee`) VALUES
 (1, 'BMW i3', 1245.00, 129.6, 254.63, 0.700, 6.40, 400, 16, 50, 400, 125, 33.00, 0.75, 0.015, 150, 0.4),
 (2, 'Chevrolet Bolt', 1625.00, 400.0, 150.00, 0.700, 0.00, 0, 0, 0, 0, 0, 60.00, 0.75, 0.015, 146, 0.4),
 (3, 'Chevrolet Volt', 1719.00, 85.0, 188.24, 0.500, 3.68, 230, 16, 0, 0, 0, 16.00, 0.75, 0.015, 161, 0.5),
@@ -102,10 +102,12 @@ INSERT INTO `type_prise` (`id`, `libelle`) VALUES
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
+  `prenom` varchar(255) DEFAULT NULL,
+  `nom` varchar(255) DEFAULT NULL,
   `mail` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `adresse` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `code_postal` int(5) NOT NULL,
-  `ville` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `adresse` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `code_postal` int(5) DEFAULT NULL,
+  `ville` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `vehicule_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -117,10 +119,10 @@ CREATE TABLE `user` (
 
 CREATE TABLE `vehicule` (
   `id` int(11) NOT NULL,
-  `modele_id` int(11) NOT NULL,
+  `modele_id` int(11) DEFAULT NULL,
   `puissanceAccessoires` double(10,2) NOT NULL DEFAULT '0.00' COMMENT 'KW',
-  `typePrise_id` int(11) NOT NULL,
-  `pourcentage_batterie` float(3,2) NOT NULL
+  `type_prise_id` int(11) DEFAULT NULL,
+  `pourcentage_batterie` int(3) NOT NULL DEFAULT '100'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -151,7 +153,7 @@ ALTER TABLE `user`
 --
 ALTER TABLE `vehicule`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `typePrise_id` (`typePrise_id`),
+  ADD KEY `typePrise_id` (`type_prise_id`),
   ADD KEY `modele_id` (`modele_id`);
 
 --
@@ -190,7 +192,7 @@ ALTER TABLE `user`
 -- Contraintes pour la table `vehicule`
 --
 ALTER TABLE `vehicule`
-  ADD CONSTRAINT `vehicule_ibfk_1` FOREIGN KEY (`typePrise_id`) REFERENCES `type_prise` (`id`);
+  ADD CONSTRAINT `vehicule_ibfk_1` FOREIGN KEY (`type_prise_id`) REFERENCES `type_prise` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
