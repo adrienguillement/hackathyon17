@@ -65,7 +65,25 @@ $app->get('/parametres', function () use($client, $app){
 
     return $output;
 });
+$app->post('/parametre', function () use($client, $app){
+    if(!$app['session']->get('is_user')){
+        $output = $app->redirect('.');
+    } else {
+        ob_start();
+        $adresse = $_POST['adresse'];
+        $cp = $_POST['cp'];
+        $ville = $_POST['ville'];
+        $voiture = $_POST['voiture'];
+        $prise = $_POST['prise'];
+        $pourcentage = $_POST['pourcentage'];
+        $client->setAccessToken($app['session']->get('token'));
+        $token = json_decode($app['session']->get('token')['access_token']);
+        require ('../view/setting.php');
+        $output = ob_get_clean();
+    }
 
+    return $output;
+});
 // ... planning page
 $app->get('/planning', function () use($client, $app){
     if(!$app['session']->get('is_user')){
