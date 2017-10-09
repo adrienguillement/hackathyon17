@@ -19,7 +19,7 @@ $vehicule  = R::findOne( 'vehicule', ' id = ? ', [$user["vehicule_id"]] );
 ?>
 <div class="container" style="padding-bottom: 50px;">
     <div class="row justify-content-md-center">
-      <h1 style="text-align: center;"> Completez vos données pour avoir accès à toutes les fonctionnalités de l'application !</h1><br>
+      <h1 class="titrePrincipaldefault" style="text-align: center;"> Completez vos données pour avoir accès à toutes les fonctionnalités de l'application !</h1><br>
         <div class="col">
             <form action="parametre" method="post">
                 <fieldset>

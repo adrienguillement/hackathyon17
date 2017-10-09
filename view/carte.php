@@ -29,7 +29,8 @@ $borne = R::findAll('bornes');
       }
     </style>
   </head>
-    <h2 style="text-align: center;margin-top:2%;"> Retrouvez l'ensemble des bornes de rechargement de la Vendée ! </h2><br>
+    <img class="iconCarte" src="../web/assets/logo/Placeholder.svg" alt="Optimoov" height="10%" width="10%"/>
+    <h2 style="text-align: center;margin-top:3%;"> Retrouvez l'ensemble des bornes de rechargement de la Vendée ! </h2><br>
     <center>
     <small class="form-text text-muted">Cliquez sur une borne pour avoir ses caractéristiques</small>
   </center>
