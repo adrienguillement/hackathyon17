@@ -17,12 +17,17 @@ $eamil = $mail['emails']['0']['value'];
 $user  = R::findOne( 'user', ' mail = ? ', [$eamil] );
 $vehicule  = R::findOne( 'vehicule', ' id = ? ', [$user["vehicule_id"]] );
 ?>
+
 <div class="container" style="padding-bottom: 50px;">
     <div class="row justify-content-md-center">
         <div class="col">
             <form action="parametre" method="post">
                 <fieldset>
-                    <legend>Renseignements sur moi : </legend>
+                  <div class="jumbotron jumboSetting">
+                    <img class="iconSetting" src="../web/assets/logo/Placeholder.svg" alt="Optimoov" height="5%" width="5%"/>
+                    <legend class="legendSetting">Renseignements sur moi : </legend>
+                    <hr class="my-4">
+
                     <div class="form-group">
                         <label for="exampleInputEmail1">Prénom : </label>
                         <input type="text" class="form-control" id="inputPrenom" placeholder="Mon prénom" name="prenom"  value="<?php echo $user["prenom"]; ?>" required>
@@ -37,9 +42,13 @@ $vehicule  = R::findOne( 'vehicule', ' id = ? ', [$user["vehicule_id"]] );
                         <label for="exampleInputEmail1" style="display: none;">Email : </label>
                         <input type="text" class="form-control" id="inputEmail" placeholder="Mon email" name="mail"  value="<?php echo $user["mail"]; ?>" style="display: none;">
                     </div>
+                  </div>
 
-                    <legend>Renseignements sur mon adresse : </legend>
-                    <small id="adresseHelp" class="form-text text-muted">Vous pourrez changer votre adresse quand bon vous semble !</small></br>
+                  <div class="jumbotron jumboSetting">
+                    <img class="iconSetting" src="../web/assets/logo/Placeholder.svg" alt="Optimoov" height="5%" width="5%"/>
+                    <legend class="legendSetting">Renseignements sur mon adresse : </legend>
+                    <hr class="my-4">
+
                     <div class="form-group">
                         <label for="exampleInputEmail1">Adresse : </label>
                         <input type="text" class="form-control" id="inputAdresse" placeholder="Mon adresse" name="adresse"  value="<?php echo $user["adresse"]; ?>" required>
@@ -54,8 +63,14 @@ $vehicule  = R::findOne( 'vehicule', ' id = ? ', [$user["vehicule_id"]] );
                         <label for="exampleInputEmail1">Ville : </label>
                         <input type="text" class="form-control" id="inputVille" placeholder="Ma ville" name="ville" value="<?php echo $user["ville"]; ?>"required>
                     </div>
+                    <small id="adresseHelp" class="form-text text-muted">Vous pourrez changer votre adresse quand bon vous semble !</small></br>
+                  </div>
 
-                    <legend>Renseignements sur mon vehicule : </legend>
+                  <div class="jumbotron jumboSetting">
+                    <img class="iconSetting" src="../web/assets/logo/Placeholder.svg" alt="Optimoov" height="5%" width="5%"/>
+                    <legend class="legendSetting">Renseignements sur mon vehicule : </legend>
+                    <hr class="my-4">
+
                     <div class="form-group">
                         <label for="select">Choix de la voiture : </label>
                         <select class="form-control" id="selectCar" name="voiture" required>
@@ -88,11 +103,11 @@ $vehicule  = R::findOne( 'vehicule', ' id = ? ', [$user["vehicule_id"]] );
                     <div class="form-group">
                         <label for="exampleInputEmail1">Niveau de la batterie actuelle (%) :</label>
                         <input type="text" class="form-control" id="inputPourcentage" placeholder="100%" name="pourcentage"  value="<?php echo $vehicule["pourcentage_batterie"]; ?>" pattern="^[1-9][0-9]?$|^100$" title="Pourcentage invalide, mettre un nombre compris entre 1 et 100." required>
-                        <small id="adresseHelp" class="form-text text-muted">Pensez à le mettre à jour entre deux déplacement non prévus !</small>
+                        <small id="adresseHelp" class="form-text text-muted">Pensez à mettre à jour votre niveau de batterie entre deux déplacement non prévus !</small>
                     </div>
+                  </div>
                     <div class="form-group" style="text-align: center;">
                         <button type="submit" class="btn btn-outline-success">Sauvegarder</button>
-
                     </div>
                 </fieldset>
             </form>

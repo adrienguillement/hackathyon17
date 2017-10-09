@@ -17,9 +17,18 @@
 .txtPrincipal{
 	text-shadow: 0.5px 0.5px #b2b2b2;
 }
-
+.iconSetting{
+	position: absolute;
+}
+.legendSetting{
+	margin-left: 10%;
+	margin-top: 20px;
+}
 .titrePlanning{
 	margin-top: 5%;
+}
+.jumboSetting{
+	padding-top: 32px !important;
 }
 /* Sticky footer styles
 -------------------------------------------------- */
