@@ -18,6 +18,8 @@ $app->get('/', function () use($client, $app){
     }
     return $output;
 });
+
+// ... deconnection page
 $app->get('/deconnection', function () use($client, $app){
     //$app['session']->clear();
     if(!$app['session']->get('is_user'))
@@ -122,6 +124,7 @@ $app->get('/parametres', function () use($client, $app){
 
     return $output;
 });
+// ... direct connect setting page
 $app->post('/parametre', function () use($client, $app){
     if(!$app['session']->get('is_user')){
         $output = $app->redirect('.');

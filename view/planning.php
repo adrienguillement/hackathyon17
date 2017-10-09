@@ -10,14 +10,15 @@ R::setup( 'mysql:host=localhost;dbname=optimoov',
 <link rel="stylesheet" href="../web/css/bootstrap.css">
 <link rel="stylesheet" href="../web/css/custom.css">
 <link rel="stylesheet" href="../web/assets/font-awesome-4.7.0/css/font-awesome.min.css">
-<center>
-<h1 style="text-align: center;margin-top:2%;">Vos trajets de demain : </h1>
-</center>
+<img class="iconPlanning" src="../web/assets/logo/Placeholder.svg" alt="Optimoov" height="10%" width="10%"/>
+<h1 style="text-align: center;margin-top:3%;">Vos trajets de demain : </h1>
+
 <?php
+
+//start google service calendar connexion
 $service = new Google_Service_Calendar($client);
 $calendarId = 'primary';
 $dateDemainSoir = new DateTime();
-
 $dateDemainSoir = $dateDemainSoir->modify("+1 day");
 $dateDemainSoir->setTime(23, 59, 59);
 
@@ -31,17 +32,33 @@ $optParams = array(
       'timeMax' => $dateDemainSoir->format("Y-m-d\TH:m:sP"),
       'timeMin' => $dateDemainMatin->format("Y-m-d\TH:m:sP"),
 );
-$results = $service->events->listEvents($calendarId, $optParams);
+//get results of all google calendar events that's come tomorrow
 
+$results = $service->events->listEvents($calendarId, $optParams);
 if (count($results->getItems()) == 0) {
-    print "Pas d'évènements demain dans l'agenda.\n";
+    //print "Pas d'évènements demain dans l'agenda.\n";
+    echo "
+    <div class='card card-inverse card-primary text-xs-center alertBox'style='text-align: center;'>
+      <div class='card-block'>
+        <blockquote class='card-blockquote'>
+          <header style='margin-bottom:2%;'>Attention : </header>
+          <p>Aucun évènement n'a été détécté dans l'agenda pour la journée de demain !</p>
+          <p></p>
+        </blockquote>
+      </div>
+    </div></br>";
+
+    unset($_SESSION['km']);
+    unset($_SESSION['origin']);
+    unset($_SESSION['waypoints']);
 } else {
     $km = 0;
 
+    // start google service plus service to link with the user google's account
     $plus = new Google_Service_Plus($client);
     $mail = $plus->people->get('me');
     $mail = $mail['emails']['0']['value'];
-
+    //match in the database the user
     $user  = R::findOne( 'user', ' mail = ? ', [$mail] );
     $previousEventLocation = $user["adresse"].", ".$user["ville"].", France";
     $_SESSION["origin"] = $previousEventLocation;
@@ -66,7 +83,9 @@ if (count($results->getItems()) == 0) {
       <thead>
 
     <?php
+
     $_SESSION['waypoints'] = array();
+    //browse all events and get property of trajets
     foreach ($results->getItems() as $event) {
       ?><tr><?php
         $start = $event->start->dateTime;
@@ -81,6 +100,7 @@ if (count($results->getItems()) == 0) {
         $previousEventLocation = $event->location;
         $array = json_decode($json);
 
+        //display waypoints
         array_push($_SESSION["waypoints"], $event->location);
         $_SESSION["destination"] = $event->location;
         ?><td><?php echo $array->routes[0]->legs[0]->distance->text; ?></td><?php

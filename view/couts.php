@@ -13,56 +13,67 @@ R::setup( 'mysql:host=localhost;dbname=optimoov',
 <?php
 
 if(!isset($_SESSION['km'])){
-    ?><h2>Une erreure est survenue, soit vous n'avez pas d'évènements, soit vos évènements n'ont pas d'adresses</h2><?php
-}
-$kmTotal = $_SESSION['km'];
-$plus = new Google_Service_Plus($client);
-$mail = $plus->people->get('me');
-$mail = $mail['emails']['0']['value'];
+  echo "
+  <div class='card card-inverse card-primary text-xs-center alertBox'style='text-align: center;'>
+    <div class='card-block'>
+      <blockquote class='card-blockquote'>
+        <header style='margin-bottom:2%;'>Attention : </header>
+        <p>Il semble que vous n'ayez aucun évènements demain ou que vos évènements n'ont pas d'adresses !</p>
+      </blockquote>
+    </div>
+  </div></br>";
+}else{
+  $kmTotal = $_SESSION['km'];
+  $plus = new Google_Service_Plus($client);
+  $mail = $plus->people->get('me');
+  $mail = $mail['emails']['0']['value'];
+  //retrieve all infos of the user
+  $user  = R::findOne( 'user', ' mail = ? ', [$mail] );
+  $vehicule = R::findOne('vehicule', ' id = ? ', [$user["vehicule_id"]]);
+  $modele = R::findOne('modele', ' id = ? ', [$vehicule["modele_id"]]);
+  $epa = floatval($modele["epa"]);
+  $capacite_batterie = $modele["capacite_batterie"];
 
-$user  = R::findOne( 'user', ' mail = ? ', [$mail] );
-$vehicule = R::findOne('vehicule', ' id = ? ', [$user["vehicule_id"]]);
-$modele = R::findOne('modele', ' id = ? ', [$vehicule["modele_id"]]);
-$epa = floatval($modele["epa"]);
-$capacite_batterie = $modele["capacite_batterie"];
+// few maths bowring things ...
+  $pourcentage_batterie = floatval($vehicule["pourcentage_batterie"]);
+
+  $energie_base = ($pourcentage_batterie/100)*$capacite_batterie;
+  $energie_trajet = $kmTotal*($epa/1000);
+
+  //tempo display of content
+  echo "<pre>";
+  echo "Nombre de km :".$kmTotal;
+  echo " km\nEPA : ".$epa;
+  echo " Wh/km\nÉnergie trajet : ".$energie_trajet;
+
+  echo " kWh/km\n\nCapacite batterie : ".$capacite_batterie;
+  echo " kWh\nPourcentage batterie : ".$pourcentage_batterie;
+  echo " %\nEnergie charge base : ".$energie_base." kWh";
 
 
-$pourcentage_batterie = floatval($vehicule["pourcentage_batterie"]);
+  //set message with diffrents scenario
+  if($energie_base > $energie_trajet){
+    echo "\nVous pouvez réaliser le trajet sans recharger votre véhicule. Voici votre trajet (sans passer par les bornes)";
+  }
+  if($energie_base < $energie_trajet && $energie_trajet < $capacite_batterie){
 
-$energie_base = ($pourcentage_batterie/100)*$capacite_batterie;
-$energie_trajet = $kmTotal*($epa/1000);
+    echo "\nVous devez recharger votre batterie pour réaliser votre trajet";
+    echo "\nAfficher ici la capacité nécessaire pour réaliser son trajet";
+    echo "\nOn vous conseille de recharger votre véhicule à votre domicile, le prix du kWh est plus intéressant";
 
-echo "<pre>";
-echo "Nombre de km :".$kmTotal;
-echo " km\nEPA : ".$epa;
-echo " Wh/km\nÉnergie trajet : ".$energie_trajet;
-
-echo " kWh/km\n\nCapacite batterie : ".$capacite_batterie;
-echo " kWh\nPourcentage batterie : ".$pourcentage_batterie;
-echo " %\nEnergie charge base : ".$energie_base." kWh";
-
-
-if($energie_base > $energie_trajet){
-  echo "\nVous pouvez réaliser le trajet sans recharger votre véhicule. Voici votre trajet (sans passer par les bornes)";
-}
-if($energie_base < $energie_trajet && $energie_trajet < $capacite_batterie){
-
-  echo "\nVous devez recharger votre batterie pour réaliser votre trajet";
-  echo "\nAfficher ici la capacité nécessaire pour réaliser son trajet";
-  echo "\nOn vous conseille de recharger votre véhicule à votre domicile, le prix du kWh est plus intéressant";
-
-}
-if($energie_base < $energie_trajet && $capacite_batterie < $energie_trajet){
-  echo "\nVous devez recharger completement votre véhicule à votre domicile, puis le recharger sur les bornes disponibles sur votre trajet";
-}
-echo "</pre>";?>
-<?php echo $_SESSION["origin"]; ?>
-<?php echo $_SESSION["destination"];
-$waypoints = "";
-for($i=0; $i<sizeof($_SESSION["waypoints"]); $i++){
-  $waypoints .= "{ location: '".$_SESSION["waypoints"][$i]."'}";
-  if($i!=sizeof($_SESSION["waypoints"])-1){
-    $waypoints .= ",";
+  }
+  if($energie_base < $energie_trajet && $capacite_batterie < $energie_trajet){
+    echo "\nVous devez recharger completement votre véhicule à votre domicile, puis le recharger sur les bornes disponibles sur votre trajet";
+  }
+  echo "</pre>";?>
+  <?php echo $_SESSION["origin"]; ?>
+  <?php echo $_SESSION["destination"];
+  $waypoints = "";
+  for($i=0; $i<sizeof($_SESSION["waypoints"]); $i++){
+    $waypoints .= "{ location: '".$_SESSION["waypoints"][$i]."'}";
+    if($i!=sizeof($_SESSION["waypoints"])-1){
+      $waypoints .= ",";
+    }
   }
 }
 ?>

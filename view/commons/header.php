@@ -34,13 +34,13 @@
       <ul class="navbar-nav mr-auto">
 
         <li class="nav-item">
-            <a class="nav-link params" href="http://localhost/hackathyon17/web/<?php echo 'parametres";'?>"><i class="fa fa-cogs" aria-hidden="true"></i> Parametres</a>
+            <a class="nav-link params" href="http://localhost/hackathyon17/web/<?php echo 'parametres";'?>"><i class="fa fa-cogs" aria-hidden="true"></i> Paramètres</a>
         </li>
 
         <!--  DECONNECTION -->
         <?php if($app['session']->get('is_user')){?>
         <li class="nav-item">
-            <a class="nav-link deconnection" href="http://localhost/hackathyon17/web/<?php echo 'deconnection";'?>"><i class="fa fa-power-off" aria-hidden="true"></i> Déconnection</a>
+            <a class="nav-link deconnection" href="http://localhost/hackathyon17/web/<?php echo 'deconnection";'?>"><i class="fa fa-power-off" aria-hidden="true"></i> Déconnexion</a>
         </li>
       <?php }?>
       </ul>
