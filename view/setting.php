@@ -91,7 +91,8 @@ $vehicule  = R::findOne( 'vehicule', ' id = ? ', [$user["vehicule_id"]] );
                         <small id="adresseHelp" class="form-text text-muted">Pensez à le mettre à jour entre deux déplacement non prévus !</small>
                     </div>
                     <div class="form-group" style="text-align: center;">
-                        <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                        <button type="submit" class="btn btn-outline-success">Sauvegarder</button>
+
                     </div>
                 </fieldset>
             </form>

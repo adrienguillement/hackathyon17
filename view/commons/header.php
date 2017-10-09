@@ -12,7 +12,11 @@
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-    <a class="navbar-brand" href="http://localhost/hackathyon17/web/<?php echo 'accueil";'?>">Accueil</a>
+    <a class="navbar-brand" href="http://localhost/hackathyon17/web/<?php echo 'accueil";'?>">
+      <img class="imgPrincipal" src="../web/assets/logo/typoBlanc.png" alt="Optimoov" height="100%" width="100%"/>
+    </a>
+
+    <!--a class="navbar-brand" href="http://localhost/hackathyon17/web/<?php echo 'accueil";'?>">Accueil</a-->
 
     <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav mr-auto">

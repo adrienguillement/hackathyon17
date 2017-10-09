@@ -1,3 +1,4 @@
+<div class="footerBlock">
 <footer class="footer">
   <div class="container">
     <div class="card card-inverse card-success text-xs-center">
@@ -9,3 +10,4 @@
     </div>
   </div>
 </footer>
+</div>

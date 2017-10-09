@@ -3,25 +3,10 @@ include 'commons/header.php';
 include 'commons/footer.php';
 use RedBeanPHP\R;
 
+//setup sql database redbean
 R::setup( 'mysql:host=localhost;dbname=optimoov',
     'root', null );
-$borne = R::findAll('bornes');/*
-for ($i=1; $i < sizeof($borne); $i++) {
-  echo '<PRE>';
-  var_dump($borne[$i]["lat"],$borne[$i]["lng"]);
-  echo '</PRE>';
-
-}*/
-//id
-//id_station
-//adresse
-//Ville
-//code_postal
-//lat
-//lng
-//type_recharge
-//nbr_points_recharge
-//type_connecteur_id
+$borne = R::findAll('bornes');
 
 ?>
 <link rel="stylesheet" href="../web/css/bootstrap.css" ;?>
@@ -50,6 +35,7 @@ for ($i=1; $i < sizeof($borne); $i++) {
 
   <script>
 
+// get all params from Sydev boundq
 var locations = [<?php for ($i=1; $i < sizeof($borne)+1; $i++) {
   if($i < sizeof($borne))
   {
@@ -78,6 +64,7 @@ var locations = [<?php for ($i=1; $i < sizeof($borne)+1; $i++) {
   } ?>
 ];
 
+// initialize google map
     function initialize() {
 
       var myOptions = {
@@ -92,7 +79,7 @@ var locations = [<?php for ($i=1; $i < sizeof($borne)+1; $i++) {
 
     }
 
-
+// display markers and window box with bounds's infos
     function setMarkers(map,locations){
 
         var marker, i
