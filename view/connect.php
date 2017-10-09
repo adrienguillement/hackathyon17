@@ -1,4 +1,5 @@
 <?php
+//connection link to enter in the app
 $url = $client->createAuthUrl();
 ?>
 <!doctype html>

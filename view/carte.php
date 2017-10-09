@@ -29,7 +29,7 @@ $borne = R::findAll('bornes');
       }
     </style>
   </head>
-    <h2 style="text-align: center;margin-top:2%;"> Retrouvez l'ensembles des bornes de rechargement de la Vendée ! </h2><br>
+    <h2 style="text-align: center;margin-top:2%;"> Retrouvez l'ensemble des bornes de rechargement de la Vendée ! </h2><br>
     <center>
     <small class="form-text text-muted">Cliquez sur une borne pour avoir ses caractéristiques</small>
   </center>
@@ -106,7 +106,8 @@ var locations = [<?php for ($i=1; $i < sizeof($borne)+1; $i++) {
 
          latlngset = new google.maps.LatLng(lat, long);
 
-          var marker = new google.maps.Marker({
+        //display markers
+        var marker = new google.maps.Marker({
                   map: map, title: typeRecharge , position: latlngset,
                   icon:"../web/assets/logo/Placeholder.png"
 
@@ -115,6 +116,7 @@ var locations = [<?php for ($i=1; $i < sizeof($borne)+1; $i++) {
 
           var type_connecteur;
 
+          //check with diffrents connecteurs types
           switch (type_connecteur_id) {
             case "1":
               type_connecteur = "EF-T3"
@@ -129,7 +131,7 @@ var locations = [<?php for ($i=1; $i < sizeof($borne)+1; $i++) {
               break;
           }
 
-
+          //popup box infos
           var data = "<div class='infoBorne'>" + "<div class='titreBox'><center>"+id_station+"</center></div>"+"</br>"
           +"</r>"+"<p>Type de borne : " + typeRecharge
           +"</p></r>"+"<p>Adresse : " + adresse
@@ -146,7 +148,8 @@ var locations = [<?php for ($i=1; $i < sizeof($borne)+1; $i++) {
 
           var infowindow = new google.maps.InfoWindow()
 
-        google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
+          //listener onclick
+          google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
                 return function() {
                    infowindow.setContent(content);
                    infowindow.open(map,marker);

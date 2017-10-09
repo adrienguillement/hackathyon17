@@ -11,6 +11,10 @@ R::setup( 'mysql:host=localhost;dbname=optimoov',
 <link rel="stylesheet" href="../web/assets/font-awesome-4.7.0/css/font-awesome.min.css">
 
 <?php
+
+//link user to google user account
+//all values are required
+//insert in the database user's information about himself, his start location and his vehicule
 $plus = new Google_Service_Plus($client);
 $mail = $plus->people->get('me');
 $eamil = $mail['emails']['0']['value'];

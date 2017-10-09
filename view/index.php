@@ -3,7 +3,7 @@
 include '../view/commons/header.php';
 //include '../view/commons/footer.php';
 use RedBeanPHP\R;
-
+//link database
 R::addDatabase( 'optimoov', 'mysql:host=localhost;dbname=optimoov', 'root', null);
 R::selectDatabase( 'optimoov' );
 ?>
@@ -12,7 +12,7 @@ R::selectDatabase( 'optimoov' );
 <link rel="stylesheet" href="../web/assets/font-awesome-4.7.0/css/font-awesome.min.css">
 <body>
 <center>
-  <h1 class="titrePrincipal">Bienvenu sur notre application</h1>
+  <h1 class="titrePrincipal">Bienvenue sur notre application</h1>
   <img class="imgPrincipal" src="../web/assets/logo/LogoComplet.svg" alt="Optimoov" height="25%" width="25%"/>
   <p class="txtPrincipal">N'attendez plus d'être en panne pour aller recharger votre voiture électrique ! </p>
 </center>
@@ -20,12 +20,15 @@ R::selectDatabase( 'optimoov' );
 <!-- ENDNAVBAR -->
 
 <?php
+//google service connection
 $service = new Google_Service_Calendar($client);
 $calendarId = 'primary';
 $dateDemainSoir = new DateTime();
 
 $dateDemainSoir = $dateDemainSoir->modify("+1 day");
 $dateDemainSoir->setTime(23, 59, 59);
+
+//get date of tomorrow
 
 $dateDemainMatin = new DateTime();
 $dateDemainMatin = $dateDemainMatin->modify("+1 day");
@@ -37,12 +40,19 @@ $optParams = array(
       'timeMax' => $dateDemainSoir->format("Y-m-d\TH:m:sP"),
       'timeMin' => $dateDemainMatin->format("Y-m-d\TH:m:sP"),
 );
-$results = $service->events->listEvents($calendarId, $optParams);
+// catch events from calendar google of tomorrow
 
+$results = $service->events->listEvents($calendarId, $optParams);
+//browse all results of tomorrow if one event exist
+//return error if no one is detected
 if (count($results->getItems()) == 0) {
     print "Pas d'évènements demain dans l'agenda.\n";
+    unset($_SESSION['km']);
+    unset($_SESSION['origin']);
+    unset($_SESSION['waypoints']);
 } else {
     $km = 0;
+    //start google service plus to link the user infos with the app
     $plus = new Google_Service_Plus($client);
     $mail = $plus->people->get('me');
     $eamil = $mail['emails']['0']['value'];
