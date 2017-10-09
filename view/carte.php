@@ -17,7 +17,7 @@ $borne = R::findAll('bornes');
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 80%;
+        height: 70%;
         width: 100%;
 
       }
@@ -29,6 +29,10 @@ $borne = R::findAll('bornes');
       }
     </style>
   </head>
+    <h2 style="text-align: center;margin-top:2%;"> Retrouvez l'ensembles des bornes de rechargement de la Vendée ! </h2><br>
+    <center>
+    <small class="form-text text-muted">Cliquez sur une borne pour avoir ses caractéristiques</small>
+  </center>
   <body onload="initialize()">
   <div id="map"></div>
 

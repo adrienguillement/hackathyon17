@@ -11,7 +11,7 @@ R::setup( 'mysql:host=localhost;dbname=optimoov',
 <link rel="stylesheet" href="../web/css/custom.css">
 <link rel="stylesheet" href="../web/assets/font-awesome-4.7.0/css/font-awesome.min.css">
 <center>
-<h1 class="titrePlanning">Vos trajets de demain : </h1>
+<h1 style="text-align: center;margin-top:2%;">Vos trajets de demain : </h1>
 </center>
 <?php
 $service = new Google_Service_Calendar($client);
