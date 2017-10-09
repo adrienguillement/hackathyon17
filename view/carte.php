@@ -3,25 +3,10 @@ include 'commons/header.php';
 include 'commons/footer.php';
 use RedBeanPHP\R;
 
+//setup sql database redbean
 R::setup( 'mysql:host=localhost;dbname=optimoov',
     'root', null );
-$borne = R::findAll('bornes');/*
-for ($i=1; $i < sizeof($borne); $i++) {
-  echo '<PRE>';
-  var_dump($borne[$i]["lat"],$borne[$i]["lng"]);
-  echo '</PRE>';
-
-}*/
-//id
-//id_station
-//adresse
-//Ville
-//code_postal
-//lat
-//lng
-//type_recharge
-//nbr_points_recharge
-//type_connecteur_id
+$borne = R::findAll('bornes');
 
 ?>
 <link rel="stylesheet" href="../web/css/bootstrap.css" ;?>
@@ -32,7 +17,7 @@ for ($i=1; $i < sizeof($borne); $i++) {
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 80%;
+        height: 70%;
         width: 100%;
 
       }
@@ -44,12 +29,17 @@ for ($i=1; $i < sizeof($borne); $i++) {
       }
     </style>
   </head>
+    <h2 style="text-align: center;margin-top:2%;"> Retrouvez l'ensembles des bornes de rechargement de la Vendée ! </h2><br>
+    <center>
+    <small class="form-text text-muted">Cliquez sur une borne pour avoir ses caractéristiques</small>
+  </center>
   <body onload="initialize()">
   <div id="map"></div>
 
 
   <script>
 
+// get all params from Sydev boundq
 var locations = [<?php for ($i=1; $i < sizeof($borne)+1; $i++) {
   if($i < sizeof($borne))
   {
@@ -78,6 +68,7 @@ var locations = [<?php for ($i=1; $i < sizeof($borne)+1; $i++) {
   } ?>
 ];
 
+// initialize google map
     function initialize() {
 
       var myOptions = {
@@ -92,7 +83,7 @@ var locations = [<?php for ($i=1; $i < sizeof($borne)+1; $i++) {
 
     }
 
-
+// display markers and window box with bounds's infos
     function setMarkers(map,locations){
 
         var marker, i
@@ -117,7 +108,7 @@ var locations = [<?php for ($i=1; $i < sizeof($borne)+1; $i++) {
 
           var marker = new google.maps.Marker({
                   map: map, title: typeRecharge , position: latlngset,
-                  icon:"../web/assets/markers/type1.png"
+                  icon:"../web/assets/logo/Placeholder.png"
 
                 });
           //map.setCenter(marker.getPosition())

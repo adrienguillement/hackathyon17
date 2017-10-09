@@ -1,7 +1,7 @@
 <?php
 
 include '../view/commons/header.php';
-include '../view/commons/footer.php';
+//include '../view/commons/footer.php';
 use RedBeanPHP\R;
 
 R::addDatabase( 'optimoov', 'mysql:host=localhost;dbname=optimoov', 'root', null);
@@ -10,7 +10,13 @@ R::selectDatabase( 'optimoov' );
 <link rel="stylesheet" href="../web/css/bootstrap.css">
 <link rel="stylesheet" href="../web/css/custom.css">
 <link rel="stylesheet" href="../web/assets/font-awesome-4.7.0/css/font-awesome.min.css">
-
+<body>
+<center>
+  <h1 class="titrePrincipal">Bienvenu sur notre application</h1>
+  <img class="imgPrincipal" src="../web/assets/logo/LogoComplet.svg" alt="Optimoov" height="25%" width="25%"/>
+  <p class="txtPrincipal">N'attendez plus d'être en panne pour aller recharger votre voiture électrique ! </p>
+</center>
+</body>
 <!-- ENDNAVBAR -->
 
 <?php

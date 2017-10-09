@@ -76,7 +76,7 @@ for($i=0; $i<sizeof($_SESSION["waypoints"]); $i++){
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 100%;
+        height: 55%;
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
@@ -105,7 +105,8 @@ for($i=0; $i<sizeof($_SESSION["waypoints"]); $i++){
     </style>
   </head>
   <body>
-    <div id="map"></div>
+
+    <div class ="mapCouts" id="map"></div>
     &nbsp;
     <div id="warnings-panel"></div>
     <script>
