@@ -13,7 +13,15 @@ R::setup( 'mysql:host=localhost;dbname=optimoov',
 <?php
 
 if(!isset($_SESSION['km'])){
-    ?><h2>Une erreure est survenue, soit vous n'avez pas d'évènements, soit vos évènements n'ont pas d'adresses</h2><?php
+  echo "
+  <div class='card card-inverse card-primary text-xs-center alertBox'style='text-align: center;'>
+    <div class='card-block'>
+      <blockquote class='card-blockquote'>
+        <header style='margin-bottom:2%;'>Attention : </header>
+        <p>Il semble que vous n'ayez aucun évènements demain ou que vos évènements n'ont pas d'adresses !</p>
+      </blockquote>
+    </div>
+  </div></br>";
 }else{
   $kmTotal = $_SESSION['km'];
   $plus = new Google_Service_Plus($client);

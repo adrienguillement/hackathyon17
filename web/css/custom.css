@@ -42,6 +42,13 @@
 .jumboSetting{
 	padding-top: 32px !important;
 }
+.alertBox{
+	margin-left: 25%;
+	margin-right: 25%;
+	background-color: #ff3a00;
+	border-color: #ff3a00;
+	margin-top:10%;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

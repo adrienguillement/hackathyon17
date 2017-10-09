@@ -46,7 +46,15 @@ $results = $service->events->listEvents($calendarId, $optParams);
 //browse all results of tomorrow if one event exist
 //return error if no one is detected
 if (count($results->getItems()) == 0) {
-    print "Pas d'évènements demain dans l'agenda.\n";
+  echo "
+  <div class='card card-inverse card-primary text-xs-center alertBox'style='text-align: center;'>
+    <div class='card-block'>
+      <blockquote class='card-blockquote'>
+        <header style='margin-bottom:2%;'>Attention : </header>
+        <p>Aucun évènement n'a été détécté dans l'agenda pour la journée de demain !</p>
+      </blockquote>
+    </div>
+  </div></br>";
     unset($_SESSION['km']);
     unset($_SESSION['origin']);
     unset($_SESSION['waypoints']);

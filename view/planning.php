@@ -12,6 +12,7 @@ R::setup( 'mysql:host=localhost;dbname=optimoov',
 <link rel="stylesheet" href="../web/assets/font-awesome-4.7.0/css/font-awesome.min.css">
 <img class="iconPlanning" src="../web/assets/logo/Placeholder.svg" alt="Optimoov" height="10%" width="10%"/>
 <h1 style="text-align: center;margin-top:3%;">Vos trajets de demain : </h1>
+
 <?php
 
 //start google service calendar connexion
@@ -35,7 +36,18 @@ $optParams = array(
 
 $results = $service->events->listEvents($calendarId, $optParams);
 if (count($results->getItems()) == 0) {
-    print "Pas d'évènements demain dans l'agenda.\n";
+    //print "Pas d'évènements demain dans l'agenda.\n";
+    echo "
+    <div class='card card-inverse card-primary text-xs-center alertBox'style='text-align: center;'>
+      <div class='card-block'>
+        <blockquote class='card-blockquote'>
+          <header style='margin-bottom:2%;'>Attention : </header>
+          <p>Aucun évènement n'a été détécté dans l'agenda pour la journée de demain !</p>
+          <p></p>
+        </blockquote>
+      </div>
+    </div></br>";
+
     unset($_SESSION['km']);
     unset($_SESSION['origin']);
     unset($_SESSION['waypoints']);

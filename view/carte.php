@@ -17,7 +17,7 @@ $borne = R::findAll('bornes');
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 70%;
+        height: 60%;
         width: 100%;
 
       }
