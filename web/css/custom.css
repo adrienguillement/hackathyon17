@@ -49,6 +49,10 @@
 	border-color: #ff3a00;
 	margin-top:10%;
 }
+
+.texteColorOra{
+	color:#ff3a00 !important;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
