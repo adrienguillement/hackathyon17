@@ -11,7 +11,6 @@ R::setup( 'mysql:host=localhost;dbname=optimoov',
 <link rel="stylesheet" href="../web/css/custom.css">
 <link rel="stylesheet" href="../web/assets/font-awesome-4.7.0/css/font-awesome.min.css">
 <?php
-
 if(!isset($_SESSION['km'])){
   echo "
   <div class='card card-inverse card-primary text-xs-center alertBox'style='text-align: center;'>
@@ -23,35 +22,81 @@ if(!isset($_SESSION['km'])){
     </div>
   </div></br>";
 }else{
-  $kmTotal = $_SESSION['km'];
+  //Récupération des variables sessions
+  $trajets = $_SESSION['trajets'];
+  $km_total = $_SESSION['km'];
+
+  //utilisation de l'api google plus pour recuperer le mail de l'utilisateur
   $plus = new Google_Service_Plus($client);
   $mail = $plus->people->get('me');
   $mail = $mail['emails']['0']['value'];
-  //retrieve all infos of the user
+
+  //Récupérer des données de la base et initialisation
   $user  = R::findOne( 'user', ' mail = ? ', [$mail] );
   $vehicule = R::findOne('vehicule', ' id = ? ', [$user["vehicule_id"]]);
   $modele = R::findOne('modele', ' id = ? ', [$vehicule["modele_id"]]);
+  $bornes = R::getall('select * from bornes');
+
   $epa = floatval($modele["epa"]);
   $capacite_batterie = $modele["capacite_batterie"];
+  //PE = Premier Event (le premier evenement de la journée)
+  $PE_duree_trajet_minutes = (intval($trajets[sizeof($_SESSION['trajets'])-1][5]));
+  $PE_startDate = $trajets[sizeof($_SESSION['trajets'])-1][0];
+  $date_partir = new DateTime($PE_startDate);
+  $date_partir->sub(new DateInterval('PT' . $PE_duree_trajet_minutes . 'S'));
+  //$date_partir->sub(new DateInterval('PT' . date("Y-m-d H:i:s"). 'DATE'))
+  $date_now = new DateTime(date("Y-m-d H:i:s"));
+  $dteDiff  = $date_now->diff($date_partir);
 
-// few maths bowring things ...
+  // few maths bowring things ...
   $pourcentage_batterie = floatval($vehicule["pourcentage_batterie"]);
 
   $energie_base = ($pourcentage_batterie/100)*$capacite_batterie;
-  $energie_trajet = $kmTotal*($epa/1000);
-
-  //tempo display of content
-  echo "<pre>";
-  echo "Nombre de km :".$kmTotal;
-  echo " km\nEPA : ".$epa;
-  echo " Wh/km\nÉnergie trajet : ".$energie_trajet;
-
-  echo " kWh/km\n\nCapacite batterie : ".$capacite_batterie;
-  echo " kWh\nPourcentage batterie : ".$pourcentage_batterie;
-  echo " %\nEnergie charge base : ".$energie_base." kWh";
+  $energie_trajet = $km_total*($epa/1000);
 
 
-  //set message with diffrents scenario
+  $actual_autonomie = floatval($modele["autonomie"]) * (intval($vehicule["pourcentage_batterie"])/100);
+  if($actual_autonomie > $km_total){
+    //si l'autonomie actuelle dans la batterie (km) est supérieur trajet global(km)
+    //on affiche qu'il pourra effectuer son trajet
+    //Autonomie (km) = Autonomie (table modèle) * pourcentage_batterie (table vehicule)
+    echo "Vous pourrez bien effectuer votre trajet sans avoir besoin de recharger votre voiture.";
+  }elseif ($actual_autonomie + ($dteDiff->h*$modele["MAX_AC"]/$epa) > $km_total) {
+    //sinon si l'autonomie + la charge max possible > trajet global
+    //affichage temps de charge à la maison
+    echo "Nous vous conseillons de charger votre véhicule à votre domicile.
+    Cela vous revient donc à :";//INSERER COUT SACHANT QUE C'EST 15cts/kWH
+    echo "Pour : ";//INSERER TEMPS DE CHARGE MAISON
+  }else{
+    //Algo optimisation Étapes 4 et 5
+    echo "Veuillez dès à présent charger votre véhicule pendant : "." heures.";//INSERER TEMPS DE CHARGE MAISON
+    $autonomie = floatval($modele["autonomie"]) +(1 /*CHARGE MAX POSSIBLE MAISON INSERER*/ *0.95);
+
+    //d_reste représente la distance restante
+    $d_reste = $km_total;
+    //boucle for pour parcourir tout les trajets
+    for($i=0; $i<sizeof($trajets); $i++){
+      $distance_a_tester = floatval(str_replace(" km", "", $trajets[$i][3]));
+
+      //if autonomie > trajetglobal-distance actuelle(trajet[i])
+      if($autonomie > ($km_total-$distance_a_tester)){
+          echo '<pre>';
+          for($i=0; $i<sizeof($bornes); $i++){
+            $addresse_borne = $bornes[$i]["adresse"].",%20".$bornes[$i]["ville"].",%20France";
+            $addresse_borne = str_replace(" ", "%20", $addresse_borne);
+            var_dump($addresse_borne);
+            /*
+            $json = file_get_contents('https://maps.googleapis.com/maps/api/directions/json?origin='.$previousEventLocation.'&destination='.$endEventLocation.'&key=AIzaSyAVqjzEqc5bQS9K8k3AySOb1E57KMoMoc4');
+            $trajet_borne = json_decode($json);
+            */
+          }
+      }
+      //enlever la distance du trajet[i] à d_reste
+      $d_reste -= $distance_a_tester;
+    }
+  }
+
+  //set message with differents scenario
   if($energie_base > $energie_trajet){
     echo "\nVous pouvez réaliser le trajet sans recharger votre véhicule. Voici votre trajet (sans passer par les bornes)";
   }
@@ -68,13 +113,7 @@ if(!isset($_SESSION['km'])){
   echo "</pre>";?>
   <?php echo $_SESSION["origin"]; ?>
   <?php echo $_SESSION["destination"];
-  $waypoints = "";
-  for($i=0; $i<sizeof($_SESSION["waypoints"]); $i++){
-    $waypoints .= "{ location: '".$_SESSION["waypoints"][$i]."'}";
-    if($i!=sizeof($_SESSION["waypoints"])-1){
-      $waypoints .= ",";
-    }
-  }
+
 }
 ?>
 <!DOCTYPE html>
