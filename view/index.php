@@ -11,78 +11,48 @@ R::selectDatabase( 'optimoov' );
 <link rel="stylesheet" href="../web/css/custom.css">
 <link rel="stylesheet" href="../web/assets/font-awesome-4.7.0/css/font-awesome.min.css">
 <body>
-  <center>
-    <h1 class="titrePrincipal">Bienvenue sur notre application</h1>
-    <img class="imgPrincipal" src="../web/assets/logo/LogoComplet.svg" alt="Optimoov" height="25%" width="25%"/>
-    <p class="txtPrincipal">N'attendez plus d'être en panne pour aller recharger votre voiture électrique ! </p>
-  </center>
-</body>
+
 <!-- ENDNAVBAR -->
 
 <?php
-//google service connection
-$service = new Google_Service_Calendar($client);
-$calendarId = 'primary';
-$dateDemainSoir = new DateTime();
 
-$dateDemainSoir = $dateDemainSoir->modify("+1 day");
-$dateDemainSoir->setTime(23, 59, 59);
+$plus = new Google_Service_Plus($client);
+$mail = $plus->people->get('me');
+$eamil = $mail['emails']['0']['value'];
+$user  = R::findOne( 'user', ' mail = ? ', [$eamil] );
+$vehicule  = R::findOne( 'vehicule', ' id = ? ', [$user["vehicule_id"]] );
+$modele = R::findOne('modele', ' id = ? ', [$vehicule["modele_id"]]);
 
-//get date of tomorrow
+$pourcentage = $vehicule->pourcentage_batterie;
+$bagnole = $modele->libelle;
 
-$dateDemainMatin = new DateTime();
-$dateDemainMatin = $dateDemainMatin->modify("+1 day");
-$dateDemainMatin->setTime(00, 00, 00);
-$optParams = array(
-  'maxResults' => 10,
-  'orderBy' => 'startTime',
-  'singleEvents' => TRUE,
-  'timeMax' => $dateDemainSoir->format("Y-m-d\TH:m:sP"),
-  'timeMin' => $dateDemainMatin->format("Y-m-d\TH:m:sP"),
-);
-// catch events from calendar google of tomorrow
+$prenom = $user->prenom;
+$nom = $user->nom;
+$mail = $user->mail;
+?>
+<center>
+<div class="jumbotron miseaneveau">
+  <h3>Bienvenue <?php echo $prenom." ".$nom ?> </h3>
+  <center>
+    <img class="imgPrincipal" src="../web/assets/logo/LogoComplet.svg" alt="Optimoov" height="15%" width="15%"/>
+    <p class="txtPrincipal">N'attendez plus d'être en panne pour aller recharger votre voiture électrique ! </p>
+  </center>
+</body>
+  <hr class="my-4">
+  <center>
+    <p class="lead">Voici quelques informations qui vous détaillent : </p>
 
-$results = $service->events->listEvents($calendarId, $optParams);
-//browse all results of tomorrow if one event exist
-//return error if no one is detected
-if (count($results->getItems()) == 0) {
-  echo "
-  <div class='card card-inverse card-primary text-xs-center alertBox'style='text-align: center;'>
-  <div class='card-block'>
-  <blockquote class='card-blockquote'>
-  <header style='margin-bottom:2%;'>Attention : </header>
-  <p>Aucun évènement n'a été détécté dans l'agenda pour la journée de demain !</p>
-  </blockquote>
-  </div>
-  </div></br>";
-  unset($_SESSION['km']);
-  unset($_SESSION['origin']);
-  unset($_SESSION['waypoints']);
-} else {
-  $km = 0;
-  //start google service plus to link the user infos with the app
-  $plus = new Google_Service_Plus($client);
-  $mail = $plus->people->get('me');
-  $eamil = $mail['emails']['0']['value'];
-  $user  = R::findOne( 'user', ' mail = ? ', [$eamil] );
-  $previousEventLocation = $user["adresse"].", ".$user["ville"].", France";
-  $_SESSION["origin"] = $previousEventLocation;
+  <p>Votre adresse mail : <?php echo $mail ?> </p>
+  <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+  <p>Pourcentage de batterie restant : <?php echo $pourcentage ?>%</p>
+  <small class="form-text text-muted"><a href="http://localhost/hackathyon17/web/<?php echo 'parametres";'?>>Cliquer ici pour la mettre à jour</a></small></br>
 
-  $_SESSION['waypoints'] = array();
-  foreach ($results->getItems() as $event) {
-    $start = $event->start->dateTime;
-    if (empty($start)) {
-      $start = $event->start->date;
-    }
-    $endAddresse = str_replace(" ", "%20", $event->location);
-    $previousEventLocation = str_replace(" ", "%20", $previousEventLocation);
-    $json = file_get_contents('https://maps.googleapis.com/maps/api/directions/json?origin='.$previousEventLocation.'&destination='.$endAddresse.'&key=AIzaSyAVqjzEqc5bQS9K8k3AySOb1E57KMoMoc4');
-    $previousEventLocation = $event->location;
-    $array = json_decode($json);
-    array_push($_SESSION["waypoints"], $event->location);
-    $_SESSION['destination'] = $event->location;
-    //$km += $array->routes[0]->legs[0]->distance->text;
-    $km += floatval(str_replace("km", "", $array->routes[0]->legs[0]->distance->text));
-    $_SESSION['km'] = $km;
-  }
-}
+  <p>Modele de voiture : <?php echo $bagnole ?> </p>
+
+</center>
+
+  <p class="lead">
+    <a class="btn btn-outline-primary" role="button" href="http://localhost/hackathyon17/web/<?php echo 'planning";'?>">Consultez votre planning</a>
+  </p>
+</div>
+</center>
