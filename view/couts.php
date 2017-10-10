@@ -75,20 +75,25 @@ if(!isset($_SESSION['km'])){
     //d_reste représente la distance restante
     $d_reste = $km_total;
     //boucle for pour parcourir tout les trajets
-    for($i=0; $i<sizeof($trajets); $i++){
+    for($i=0; $i<sizeof($trajets)-1; $i++){
       $distance_a_tester = floatval(str_replace(" km", "", $trajets[$i][3]));
-
       //if autonomie > trajetglobal-distance actuelle(trajet[i])
       if($autonomie > ($km_total-$distance_a_tester)){
           echo '<pre>';
+          $mes_bornes = array();
           for($i=0; $i<sizeof($bornes); $i++){
+            $ma_borne = array();
             $addresse_borne = $bornes[$i]["adresse"].",%20".$bornes[$i]["ville"].",%20France";
+            array_push($ma_borne, $addresse_borne);
             $addresse_borne = str_replace(" ", "%20", $addresse_borne);
-            var_dump($addresse_borne);
-            /*
-            $json = file_get_contents('https://maps.googleapis.com/maps/api/directions/json?origin='.$previousEventLocation.'&destination='.$endEventLocation.'&key=AIzaSyAVqjzEqc5bQS9K8k3AySOb1E57KMoMoc4');
+            $json = file_get_contents('https://maps.googleapis.com/maps/api/directions/json?origin='.$trajets[$i][1].'&destination='.$addresse_borne.'&key=AIzaSyAVqjzEqc5bQS9K8k3AySOb1E57KMoMoc4');
             $trajet_borne = json_decode($json);
-            */
+            if(isset($trajet_borne->routes[0])){
+
+              $trajet_borne = $trajet_borne->routes[0]->legs[0]->distance->text;
+              var_dump($trajet_borne);
+            }
+            array_push($mes_bornes, $ma_borne);
           }
       }
       //enlever la distance du trajet[i] à d_reste
