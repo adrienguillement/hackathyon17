@@ -31,7 +31,7 @@ $url = $client->createAuthUrl();
 <footer class="footer">
   <div class="container">
     <center>
-      <p style="margin-bottom:0;">Code fait avec le <i class="fa fa-heart" aria-hidden="true"></i> mais surtout avec du <i class="fa fa-coffee" aria-hidden="true"></i> | Hackathyon2k17 - Projet OptiMoov - Équipe Yes We Code - Tous droits réservés - 2017</p>
+      <p style="margin-bottom:0;">Code fait avec le <i class="fa fa-heart" aria-hidden="true"></i> mais surtout avec du <i class="fa fa-coffee" aria-hidden="true"></i> | Hackathyon2k17 - Projet OptiMoov - Équipe Yes We Moov - Tous droits réservés - 2017</p>
     </center>
   </div>
 </footer>

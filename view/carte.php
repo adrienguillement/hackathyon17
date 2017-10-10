@@ -66,9 +66,10 @@ html, body {
       ."\"".$borne[$i]["nbr_points_recharge"]."\"".
       "]";
     }
-  } ?>
+  }
+  ?>
 ];
-
+console.log(locations);
 // initialize google map
 function initialize() {
 
@@ -91,7 +92,6 @@ function setMarkers(map,locations){
 
   for (i = 0; i < locations.length; i++)
   {
-
     var typeRecharge = locations[i][0]
     var lat = locations[i][1]
     var long = locations[i][2]
